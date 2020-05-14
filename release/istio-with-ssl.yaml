@@ -15,12 +15,12 @@
 apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
-  name: hipster2-cert
+  name: hipster-cert
   namespace: istio-system
 spec:
-  secretName: hipster2-cert
+  secretName: hipster-cert
   issuerRef:
-    name: letsencrypt
+    name: CLUSTER_ISSUER
     kind: ClusterIssuer
   dnsNames:
   - STORE_FQDN
@@ -52,7 +52,7 @@ spec:
       mode: SIMPLE
       serverCertificate: "sds"
       privateKey: "sds"
-      credentialName: hipster2-cert
+      credentialName: hipster-cert
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService

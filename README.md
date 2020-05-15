@@ -163,21 +163,15 @@ We offer the following installation methods:
 1.  Enable Azure Container Registry (ACR) on your AKS cluster and configure the
     `docker` CLI to authenticate to ACR:
 
-1.  In the root of this repository, run `skaffold run --default-repo=gcr.io/[PROJECT_ID]`,
-    where [PROJECT_ID] is your GCP project ID.
+1.  In the root of this repository, run `skaffold run --default-repo=[ACR URL]`,
+    where [ACR_URL] is the url for your Azure Container Registry.
 
     This command:
 
     - builds the container images
-    - pushes them to GCR
+    - pushes them to ACR
     - applies the `./kubernetes-manifests` deploying the application to
-      Kubernetes.
-
-    **Troubleshooting:** If you get "No space left on device" error on Google
-    Cloud Shell, you can build the images on Google Cloud Build: [Enable the
-    Cloud Build
-    API](https://console.cloud.google.com/flows/enableapi?apiid=cloudbuild.googleapis.com),
-    then run `skaffold run -p gcb --default-repo=gcr.io/[PROJECT_ID]` instead.
+      Kubernetes
 
 1.  Find the IP address of your application, then visit the application on your
     browser to confirm installation.

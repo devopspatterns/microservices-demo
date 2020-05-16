@@ -9,16 +9,12 @@ Online Boutique consists of a 10-tier microservices application. The application
 web-based e-commerce app where users can browse items,
 add them to the cart, and purchase them.
 
-**Google uses this application to demonstrate use of technologies like
-Kubernetes/GKE, Istio, Stackdriver, gRPC and OpenCensus**. This application
+**You can use this application to demonstrate use of technologies like
+Kubernetes/AKS, Istio, Stackdriver, gRPC and OpenCensus**. This application
 works on any Kubernetes cluster (such as a local one), as well as Google
 Kubernetes Engine. It’s **easy to deploy with little to no configuration**.
 
 If you’re using this demo, please **★Star** this repository to show your interest!
-
-> 👓**Note to Googlers:** Please fill out the form at
-> [go/microservices-demo](http://go/microservices-demo) if you are using this
-> application.
 
 Looking for the old Hipster Shop frontend interface? Use the [manifests](https://github.com/GoogleCloudPlatform/microservices-demo/tree/v0.1.5/kubernetes-manifests) in release [v0.1.5](https://github.com/GoogleCloudPlatform/microservices-demo/releases/v0.1.5).
 
@@ -54,9 +50,9 @@ Find **Protocol Buffers Descriptions** at the [`./pb` directory](./pb).
 
 ## Features
 
-- **[Kubernetes](https://kubernetes.io)/[GKE](https://cloud.google.com/kubernetes-engine/):**
+- **[Kubernetes](https://kubernetes.io):**
   The app is designed to run on Kubernetes (both locally on "Docker for
-  Desktop", as well as on the cloud with GKE).
+  Desktop", as well as on the cloud with AKS).
 - **[gRPC](https://grpc.io):** Microservices use a high volume of gRPC calls to
   communicate to each other.
 - **[Istio](https://istio.io):** Application works on Istio service mesh.
@@ -65,8 +61,7 @@ Find **Protocol Buffers Descriptions** at the [`./pb` directory](./pb).
 - **[Stackdriver APM](https://cloud.google.com/stackdriver/):** Many services
   are instrumented with **Profiling**, **Tracing** and **Debugging**. In
   addition to these, using Istio enables features like Request/Response
-  **Metrics** and **Context Graph** out of the box. When it is running out of
-  Google Cloud, this code path remains inactive.
+  **Metrics** and **Context Graph** out of the box.
 - **[Skaffold](https://skaffold.dev):** Application
   is deployed to Kubernetes with a single command using Skaffold.
 - **Synthetic Load Generation:** The application demo comes with a background
@@ -87,9 +82,8 @@ We offer the following installation methods:
      Recommended for Mac/Windows.
    - [Kind](https://www.docker.com/products/docker-desktop). Supports Mac/Windows/Linux.
 
-1. **Running on Google Kubernetes Engine (GKE)”** (~30 minutes) You will build,
-   upload and deploy the container images to a Kubernetes cluster on Google
-   Cloud.
+1. **Running on Azure Kubernetes Service (AKS)”** (~30 minutes) You will build,
+   upload and deploy the container images to a Kubernetes cluster on Azure
 
 1. **Using pre-built container images:** (~10 minutes, you will still need to
    follow one of the steps above up until `skaffold run` command). With this
@@ -159,55 +153,25 @@ We offer the following installation methods:
     kubectl port-forward deployment/frontend 8080:8080
     ```
 
-### Option 2: Running on Google Kubernetes Engine (GKE)
-
-> 💡 Recommended if you're using Google Cloud Platform and want to try it on
-> a realistic cluster.
+### Option 2: Running on Azure Kubernetes Service (AKS)
 
 1.  Install tools specified in the previous section (Docker, kubectl, skaffold)
 
-1.  Create a Google Kubernetes Engine cluster and make sure `kubectl` is pointing
+1.  Create an AKS cluster and make sure `kubectl` is pointing
     to the cluster.
 
-    ```sh
-    gcloud services enable container.googleapis.com
-    ```
+1.  Enable Azure Container Registry (ACR) on your AKS cluster and configure the
+    `docker` CLI to authenticate to ACR:
 
-    ```sh
-    gcloud container clusters create demo --enable-autoupgrade \
-        --enable-autoscaling --min-nodes=3 --max-nodes=10 --num-nodes=5 --zone=us-central1-a
-    ```
-
-    ```
-    kubectl get nodes
-    ```
-
-1.  Enable Google Container Registry (GCR) on your GCP project and configure the
-    `docker` CLI to authenticate to GCR:
-
-    ```sh
-    gcloud services enable containerregistry.googleapis.com
-    ```
-
-    ```sh
-    gcloud auth configure-docker -q
-    ```
-
-1.  In the root of this repository, run `skaffold run --default-repo=gcr.io/[PROJECT_ID]`,
-    where [PROJECT_ID] is your GCP project ID.
+1.  In the root of this repository, run `skaffold run --default-repo=[ACR URL]`,
+    where [ACR_URL] is the url for your Azure Container Registry.
 
     This command:
 
     - builds the container images
-    - pushes them to GCR
+    - pushes them to ACR
     - applies the `./kubernetes-manifests` deploying the application to
-      Kubernetes.
-
-    **Troubleshooting:** If you get "No space left on device" error on Google
-    Cloud Shell, you can build the images on Google Cloud Build: [Enable the
-    Cloud Build
-    API](https://console.cloud.google.com/flows/enableapi?apiid=cloudbuild.googleapis.com),
-    then run `skaffold run -p gcb --default-repo=gcr.io/[PROJECT_ID]` instead.
+      Kubernetes
 
 1.  Find the IP address of your application, then visit the application on your
     browser to confirm installation.

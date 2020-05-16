@@ -15,15 +15,15 @@
 apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
-  name: hipster2-cert
+  name: hipster-cert
   namespace: istio-system
 spec:
-  secretName: hipster2-cert
+  secretName: hipster-cert
   issuerRef:
     name: letsencrypt
     kind: ClusterIssuer
   dnsNames:
-  - hipster2.devopspatterns.com
+  - hipster.devopspatterns.com
 
 ---
 apiVersion: networking.istio.io/v1alpha3
@@ -39,7 +39,7 @@ spec:
       number: 80
       protocol: HTTP
     hosts:
-    - hipster2.devopspatterns.com
+    - hipster.devopspatterns.com
     tls:
       httpsRedirect: true
   - port:
@@ -47,12 +47,12 @@ spec:
       number: 443
       protocol: HTTPS
     hosts:
-    - hipster2.devopspatterns.com
+    - hipster.devopspatterns.com
     tls:
       mode: SIMPLE
       serverCertificate: "sds"
       privateKey: "sds"
-      credentialName: hipster2-cert
+      credentialName: hipster-cert
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService

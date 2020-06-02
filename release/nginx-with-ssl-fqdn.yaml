@@ -1,0 +1,32 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: hipster-cert
+spec:
+  secretName: hipster-cert
+  issuerRef:
+    name: letsencrypt
+    kind: CLUSTER_ISSUER
+  dnsNames:
+  - STORE_FQDN
+
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: hipster-ingress 
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  tls:
+  - hosts:
+    - STORE_FQDN
+    secretName: hipster-cert 
+  rules:
+  - host: STORE_FQDN 
+    http:
+      paths:
+      - backend:
+          serviceName: frontend
+          servicePort: 80
+        path: /
